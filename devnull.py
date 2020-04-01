@@ -28,7 +28,7 @@ async def on_message(message):
             type='rich',
             description=f'**Prefix:** `{bot.command_prefix}`',
             color=0x336d9d,
-            url='https://github.com/defnullined/devnull-py'
+            url='https://github.com/devNullDefined/devnull-py'
         )
         fetch.set_author(
             name=message.guild.name,
