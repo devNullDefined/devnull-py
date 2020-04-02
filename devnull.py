@@ -1,6 +1,8 @@
 import discord
 from discord.ext import commands
 import json
+import asyncio
+from random import randint, choice, randrange
 
 with open('config.json', 'r') as cfg:
     config = json.load(cfg)
@@ -19,7 +21,39 @@ async def on_ready():
 async def say(ctx, *args):
     await ctx.send(' '.join(args))
 
-    
+
+@bot.command()
+async def flip(ctx):
+    await ctx.send(choice(['Heads', 'Tails']))
+
+
+@bot.command()
+async def roll(ctx, *args):
+    if len(args) == 0:
+        n = randint(0, 100)
+    elif len(args) == 1:
+        n = randint(0, int(args[0]))
+    elif len(args) == 2:
+        n = randint(int(args[0]), int(args[1]))
+
+    await ctx.send(n)
+
+
+@bot.command()
+async def countdown(ctx, seconds: int):
+    msg = await ctx.send(f'**{seconds}**')
+
+    for i in range(seconds-1, -1, -1):
+        await asyncio.sleep(1)
+        await msg.edit(content=f'**{i}**')
+
+
+@bot.command()
+async def emojiname(ctx, emoji):
+    '''Print encoded emojiname.'''
+    await ctx.send(emoji.encode('ascii', 'namereplace'))
+
+
 @bot.listen()
 async def on_message(message):
     if bot.user.id in message.raw_mentions:
