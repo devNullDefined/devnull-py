@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+import os
 import json
 import asyncio
 from random import randint, choice, randrange
@@ -24,7 +25,8 @@ async def say(ctx, *args):
 
 @bot.command()
 async def flip(ctx):
-    await ctx.send(choice(['Heads', 'Tails']))
+    flipped = choice(['Heads', 'Tails'])
+    await ctx.send(f'**{flipped}**')
 
 
 @bot.command()
@@ -54,6 +56,12 @@ async def emojiname(ctx, emoji):
     await ctx.send(emoji.encode('ascii', 'namereplace'))
 
 
+@bot.command()
+async def reload(ctx, extension):
+    bot.unload_extension(f'cogs.{extension}')
+    bot.load_extension(f'cogs.{extension}')
+
+
 @bot.listen()
 async def on_message(message):
     if bot.user.id in message.raw_mentions:
@@ -74,5 +82,9 @@ async def on_message(message):
         )
         await message.channel.send(embed=fetch)
 
+
+for filename in os.listdir('./cogs'):
+    if filename.endswith('.py'):
+        bot.load_extension(f'cogs.{filename[:-3]}')
 
 bot.run(config['token'])
