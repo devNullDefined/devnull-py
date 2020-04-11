@@ -53,7 +53,8 @@ class Poll(commands.Cog):
         poll.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
         msg = await ctx.send(embed=poll)
         self.polls[str(msg.id)] = data
-        poll.set_footer(text=f'Poll id: {msg.id}', icon_url=self.bot.user.avatar_url)
+        poll.set_footer(text=str(msg.id), icon_url=self.bot.user.avatar_url)
+        await ctx.message.delete()
         await msg.edit(embed=poll)
         
         for emoji in data['inner'].keys():
@@ -67,7 +68,7 @@ class Poll(commands.Cog):
         for emoji, info in cls.polls[str(msg.id)]['inner'].items():
             dif = max_vote_len - len(str(info['votes']))
             description.append(f'{emoji} `{dif*"0"}{info["votes"]}` **{info["option"]}**')
-                
+
         poll = msg.embeds[0]
         poll.description = '\n'.join(description)
         await msg.edit(embed=poll)
@@ -108,10 +109,10 @@ class Poll(commands.Cog):
                     if len(target_poll_ids) == 1:
                         poll_id = int(target_poll_ids[0])
                     else:
-                        text = f'```xl\n{len(self.polls)} polls are active at this moment:'
+                        text = f'```xl\n{len(self.polls)} polls are active at this moment:\n{"-"*34}'
                         for i, _id in enumerate(target_poll_ids):
                             text += f'\n{i} {_id} ({self.polls[_id]["question"]})'
-                        text += '\nwrite index or whole id```'
+                        text += f'\n{"-"*34}\nwrite index or whole id```'
                         tmp = await ctx.send(text)
                         
                         def check(m):
@@ -123,7 +124,7 @@ class Poll(commands.Cog):
                         try:
                             i = int(answer.content)
                         except:
-                            await ctx.message.add_reaction('\N{CROSS MARK}')
+                            tmp = await ctx.send('Incorrect ID or Index')
                         else:
                             if answer.content not in target_poll_ids:
                                 if i < len(target_poll_ids):
@@ -133,16 +134,18 @@ class Poll(commands.Cog):
                             else:
                                 poll_id = i
                 else:
-                    await ctx.message.add_reaction('\N{CROSS MARK}')
-                    tmp = await ctx.send('That emoji is not used in any active polls')
+                    tmp = await ctx.send('That emoji is not used in any active poll')
 
                 await ctx.message.delete(delay=5.0)
-                await tmp.delete(delay=5.0)
+                try:
+                    await tmp.delete(delay=5.0)
+                    #return None
+                except:
+                    pass
                                     
             poll = await ctx.channel.fetch_message(poll_id)
             already_voted = await self.check_if_already_voted(True, poll, ctx.author.id)
             if already_voted:
-                await ctx.message.add_reaction('\N{CROSS MARK}')
                 tmp = await ctx.send(f'{ctx.author.mention} You have already voted!')
             else:
                 await ctx.message.add_reaction('\N{WHITE HEAVY CHECK MARK}')
@@ -150,13 +153,73 @@ class Poll(commands.Cog):
                 self.polls[str(poll_id)]['inner'][emoji]['voters'].append(ctx.author.id)
                 await self.update_poll(poll)
         else:
-            await ctx.message.add_reaction('\N{CROSS MARK}')
             tmp = await ctx.send('No active poll to vote')
         await ctx.message.delete(delay=5.0)
         try:
             await tmp.delete(delay=5.0)
         except:
             pass
+
+    @commands.command()
+    async def unvote(self, ctx, poll_id=None):
+        if self.polls:
+            if poll_id:
+                voted_data = None
+                if poll_id in self.polls.keys():
+                    for emoji, info in self.polls[poll_id]['inner']:
+                        if ctx.author.id in info['voters']:
+                            voted_data = [poll_id, emoji]
+                    if not voted_data:
+                        tmp = await ctx.send('You have not voted yet')
+                else:
+                    tmp = await ctx.send('No active poll has that id')
+            else:
+                voted_data = []
+                for _id, poll in self.polls.items():
+                    for emoji, info in poll['inner'].items():
+                        if ctx.author.id in info['voters']:
+                            voted_data.append([_id, emoji])
+                if voted_data:
+                    if len(voted_data) == 1:
+                        voted_data = voted_data[0]
+                    else:
+                        text = f'```xl\nFound {len(voted_data)} polls with your vote\n{"-"*28}'
+                        for i, data in enumerate(voted_data):
+                            text += f'\n{i} {data[0]} ({self.polls[data[0]]["question"]})'
+                        text += f'\n{"-"*28}\nWrite correct Index or whole ID```'
+                        tmp = await ctx.send(text)
+                        
+                        def check(m):
+                            return m.author == ctx.author
+                        
+                        answer = await self.bot.wait_for('message', timeout=60.0, check=check)
+                        await tmp.delete()
+                        await answer.delete()
+                        
+                        for data in voted_data:
+                            if str(answer.content) in data:
+                                voted_data = data
+
+                        if isinstance(voted_data[0], list):
+                            if int(answer.content) <= len(voted_data):
+                                voted_data = voted_data[int(answer.content)]
+                            else:
+                                tmp = await ctx.send('Youdedwrong')
+                else:
+                    tmp = await ctx.send(f'You have not voted yet (using `{self.bot.command_prefix} vote`')
+
+            if voted_data:
+                self.polls[voted_data[0]]['inner'][voted_data[1]]['voters'].remove(ctx.author.id)
+                self.polls[voted_data[0]]['inner'][voted_data[1]]['votes'] -= 1
+                await ctx.message.add_reaction('\N{WHITE HEAVY CHECK MARK}')
+                poll = await ctx.channel.fetch_message(int(voted_data[0]))
+                await self.update_poll(poll)
+            else:
+                await tmp.delete(delay=5.0)
+        else:
+            tmp = await ctx.send('No active poll to unvote')
+            await tmp.delete(delay=5.0)
+        await ctx.message.delete(delay=5.0)
         
     @commands.Cog.listener('on_reaction_add')
     @commands.Cog.listener('on_reaction_remove')
