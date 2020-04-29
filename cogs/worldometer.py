@@ -15,7 +15,7 @@ with open('shiet.js', 'r') as f:
 
 class Worldometer(commands.Cog):
     '''fuck your "Advanced Algorithm".'''
-    current_proxy = ['http://41.85.191.6:57797', 0]  # ['proxy', 'times_used']
+    current_proxy = ['', 0]  # ['proxy', 'times_used']
     url_home = 'https://www.worldometers.info/'
     url_corona = 'https://www.worldometers.info/coronavirus/'
     data = [{'title': 'Wordlometers', 'type': 'rich', 'color': 0x86c32a,
