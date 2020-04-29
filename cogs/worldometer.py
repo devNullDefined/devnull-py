@@ -58,6 +58,8 @@ class Worldometer(commands.Cog):
     @commands.cooldown(1, 600, commands.BucketType.guild)
     @commands.command()
     async def worldometer(self, ctx):
+        await ctx.send('gasasworebelia droebit ar mushaobs')
+        return None
         msg = await ctx.send('**Retrieving data...**')
         page = self.get_home_page()
         groups = page.split('=')[1:]
