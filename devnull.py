@@ -1,8 +1,8 @@
-import discord
-from discord.ext import commands
 import os
 import json
 import asyncio
+import discord
+from discord.ext import commands
 from random import randint, choice, randrange
 
 bot = commands.Bot(command_prefix=os.environ['PREFIX'])
@@ -77,6 +77,7 @@ async def on_message(message):
 for filename in os.listdir('./cogs'):
     if filename.endswith('.py'):
         bot.load_extension(f'cogs.{filename[:-3]}')
+
 
 bot.run(os.environ['TOKEN'])
 
