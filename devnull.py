@@ -53,12 +53,6 @@ async def emojiname(ctx, emoji):
     await ctx.send(emoji.encode('ascii', 'namereplace'))
 
 
-@bot.command()
-async def reload(ctx, extension):
-    bot.unload_extension(f'cogs.{extension}')
-    bot.load_extension(f'cogs.{extension}')
-
-
 @bot.listen()
 async def on_message(message):
     if bot.user.id in message.raw_mentions:
