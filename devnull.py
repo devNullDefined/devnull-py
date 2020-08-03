@@ -36,11 +36,15 @@ async def roll(ctx, *args: int):
 
 @bot.command()
 async def countdown(ctx, seconds: int):
-    msg = await ctx.send(f'**{seconds}**')
+    '''Countdown from <seconds> (min value = 3; max = 120)'''
+    if seconds in range(3, 121):
+        msg = await ctx.send(f'**{seconds}**')
 
-    for i in range(seconds-1, -1, -1):
-        await asyncio.sleep(1)
-        await msg.edit(content=f'**{i}**')
+        for i in range(seconds-1, -1, -1):
+            await asyncio.sleep(1)
+            await msg.edit(content=f'**{i}**')
+    else:
+        await ctx.send('min seconds = 3; max = 120')
 
 
 @bot.command()
