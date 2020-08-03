@@ -26,15 +26,12 @@ async def flip(ctx):
 
 
 @bot.command()
-async def roll(ctx, *args):
-    if len(args) == 0:
-        n = randint(0, 100)
-    elif len(args) == 1:
-        n = randint(0, int(args[0]))
-    elif len(args) == 2:
-        n = randint(int(args[0]), int(args[1]))
-
-    await ctx.send(n)
+async def roll(ctx, *args: int):
+    if len(args) == 0: args = [0, 100]
+    elif len(args) == 1: args = [args[0], 0]
+    elif len(args) == 2: args = list(args)
+    args.sort()
+    await ctx.send(randint(*args))
 
 
 @bot.command()
