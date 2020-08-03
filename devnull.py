@@ -35,31 +35,6 @@ async def roll(ctx, *args: int):
 
 
 @bot.command()
-async def dotaroll(ctx):
-    a = randrange(101)
-    b = randrange(10)
-    c = randrange(10)
-
-    if a == 100:
-        num = '100'
-    else:
-        num = f'0{b}{c}'
-
-    starter = ['0', str(randrange(10)), str(randrange(10))] or ['1', '0', '0']
-    msg = await ctx.send(f'`{"".join(starter)}`')
-
-    for i in range(len(starter)):
-        while starter[i] != num[i]:
-            if starter[i] == '9':
-                starter[i] = '0'
-            else:
-                starter[i] = str(int(starter[i]) + 1)
-            await msg.edit(content=f'`{"".join(starter)}`')
-        else:
-            continue
-
-
-@bot.command()
 async def countdown(ctx, seconds: int):
     msg = await ctx.send(f'**{seconds}**')
 
