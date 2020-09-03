@@ -1,5 +1,1 @@
 discord
-requests
-beautifulsoup4
-fake_useragent
-selenium
