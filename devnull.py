@@ -74,6 +74,7 @@ async def on_message(message):
         await message.channel.send(embed=fetch)
 
     # temporarily for Halloween shit
+    # might not work idk will test later...
     if message.author.id == 755580145078632508 and message.channel.id == 767342376997224468:
         if message.embeds[0].to_dict()['title'] == 'A trick-or-treater has stopped by!':
             await message.channel.send(message.guild.get_user(244461918243389442).mention)
