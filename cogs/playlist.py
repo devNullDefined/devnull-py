@@ -3,7 +3,7 @@ import discord
 from discord.ext import tasks, commands
 
 
-class Playlst(commands.Cog):
+class Playlist(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.music_channel = bot.get_channel(617702259282935808)
