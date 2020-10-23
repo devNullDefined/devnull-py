@@ -22,7 +22,7 @@ class Playlist(commands.Cog):
         messages = await music_channel.history(limit=200).flatten()
         title = self.get_music_title(messages)
         listening = discord.Activity(type=discord.ActivityType.listening, name=title)
-        await bot.change_presence(activity=listening)
+        await self.bot.change_presence(activity=listening)
 
 
 def setup(bot):
