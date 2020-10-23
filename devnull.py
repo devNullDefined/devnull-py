@@ -6,12 +6,11 @@ from discord.ext import commands
 from random import randint, choice, randrange
 
 bot = commands.Bot(command_prefix=os.environ['PREFIX'])
+music_playlist = []
 
 @bot.event
 async def on_ready():
     print('Ready!')
-    watching = discord.Activity(type=discord.ActivityType.watching, name='Luke Smith')
-    await bot.change_presence(activity=watching)
 
 
 @bot.command()
