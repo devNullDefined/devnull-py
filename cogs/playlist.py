@@ -21,7 +21,7 @@ class Playlist(commands.Cog):
         music_channel = await self.bot.fetch_channel(self.music_channel_id)
         messages = await music_channel.history(limit=200).flatten()
         title = self.get_music_title(messages)
-        listening = discord.Activity(type=discord.Activity.listening, name=title)
+        listening = discord.Activity(type=discord.ActivityType.listening, name=title)
         await bot.change_presence(activity=listening)
 
 
