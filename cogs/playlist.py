@@ -6,7 +6,7 @@ from discord.ext import tasks, commands
 class Playlist(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.music_channel = bot.get_channel(617702259282935808)
+        self.music_channel_id = 617702259282935808
         self.listen.start()
 
     def get_music_title(self, messages):
@@ -17,7 +17,8 @@ class Playlist(commands.Cog):
 
     @tasks.loop(minutes=5.0)
     async def listen(self):
-        messages = await self.music_channel.history(limit=200).flatten()
+        music_channel = self.bot.get_channel(self.music_channel_id)
+        messages = await music_channel.history(limit=200).flatten()
         title = self.get_music_title(messages)
         listening = discord.Activity(type=discord.Activity.listening, name=title)
         await bot.change_presence(activity=listening)
