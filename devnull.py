@@ -54,24 +54,6 @@ async def emojiname(ctx, emoji):
 
 @bot.listen()
 async def on_message(message):
-    if bot.user.id in message.raw_mentions:
-        fetch = discord.Embed(
-            title=bot.user.name,
-            type='rich',
-            description=f'**Prefix:** `{bot.command_prefix}`',
-            color=0x336d9d,
-            url='https://github.com/devNullDefined/devnull-py'
-        )
-        fetch.set_author(
-            name=message.guild.name,
-            url='https://github.com/devNullDefined',
-            icon_url=message.guild.icon_url
-        )
-        fetch.set_thumbnail(
-            url=bot.user.avatar_url
-        )
-        await message.channel.send(embed=fetch)
-
     # temporarily for Halloween shit
     if message.author.id == 755580145078632508 and message.channel.id == 767342376997224468:
         if message.embeds[0].to_dict()['title'] == 'A trick-or-treater has stopped by!':
