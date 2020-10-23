@@ -11,13 +11,14 @@ class Playlist(commands.Cog):
 
     def get_music_title(self, messages):
         random_message = random.choice(messages)
-        if random_message.embeds:
+        try:
             return random_message.embeds[0].to_dict()['title']
-        self.get_music_title(messages)
+        except:
+            self.get_music_title(messages)
 
     @tasks.loop(minutes=5.0)
     async def listen(self):
-        music_channel = self.bot.get_channel(self.music_channel_id)
+        music_channel = await self.bot.fetch_channel(self.music_channel_id)
         messages = await music_channel.history(limit=200).flatten()
         title = self.get_music_title(messages)
         listening = discord.Activity(type=discord.Activity.listening, name=title)
