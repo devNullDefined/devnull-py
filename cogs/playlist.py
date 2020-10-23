@@ -14,7 +14,7 @@ class Playlist(commands.Cog):
         try:
             return random_message.embeds[0].to_dict()['title']
         except:
-            self.get_music_title(messages)
+            return self.get_music_title(messages)
 
     @tasks.loop(minutes=5.0)
     async def listen(self):
