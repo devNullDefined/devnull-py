@@ -52,14 +52,6 @@ async def emojiname(ctx, emoji):
     await ctx.send(emoji.encode('ascii', 'namereplace'))
 
 
-@bot.listen()
-async def on_message(message):
-    # temporarily for Halloween shit
-    if message.author.id == 755580145078632508 and message.channel.id == 767342376997224468:
-        if message.embeds[0].to_dict()['title'] == 'A trick-or-treater has stopped by!':
-            await message.channel.send(message.guild.get_member(244461918243389442).mention)
-
-
 for filename in os.listdir('./cogs'):
     if filename.endswith('.py'):
         bot.load_extension(f'cogs.{filename[:-3]}')
