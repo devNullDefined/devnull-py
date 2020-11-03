@@ -1,9 +1,9 @@
-import os
-import json
-import asyncio
-import discord
-from discord.ext import commands
 from random import randint, choice, randrange
+from discord.ext import commands
+import discord
+import asyncio
+import json
+import os
 
 bot = commands.Bot(command_prefix=os.environ['PREFIX'])
 music_playlist = []
@@ -58,4 +58,3 @@ for filename in os.listdir('./cogs'):
 
 
 bot.run(os.environ['TOKEN'])
-
