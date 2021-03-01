@@ -53,9 +53,9 @@ async def countdown(ctx, seconds: int):
         await ctx.send('min seconds = 3; max = 120')
 
 @bot.command()
-async def emojiname(ctx, emoji):
+async def emojiname(ctx, emoji: discord.Emoji):
     '''Print encoded emojiname.'''
-    await ctx.send(emoji.encode('ascii', 'namereplace'))
+    await ctx.send(str(emoji).encode('ascii', 'namereplace'))
     await ctx.send(f'emoji ID: {emoji.id}')
 
 
