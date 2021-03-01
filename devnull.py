@@ -1,5 +1,6 @@
 from random import randint, choice, randrange
 from discord.ext import commands
+from discord.ext.commands import CommandNotFound
 import discord
 import asyncio
 import json
@@ -14,9 +15,13 @@ async def on_ready():
 
 @bot.event
 async def on_command_error(ctx, error):
-    if isinstance(error, commands.CommandNotFound):
-        await ctx.send('პრეფიქსები ხომ არ აგერია')
+    if isinstance(error, CommandNotFound):
+        await ctx.send('მაგაზე პასუხი არ მაქვს, მგონი პრეფიქსი აგერია {bot.get_emoji(816016788969750539)}')
     raise error
+
+@bot.command()
+async def ping(ctx):
+    await ctx.send(f'pong: {round(bot.latency * 1000)}MS')
 
 @bot.command()
 async def say(ctx, *args):
