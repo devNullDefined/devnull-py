@@ -16,7 +16,7 @@ async def on_ready():
 @bot.event
 async def on_command_error(ctx, error):
     if isinstance(error, CommandNotFound):
-        await ctx.send(f'მაგაზე პასუხი არ მაქვს, მგონი პრეფიქსი აგერია {bot.get_emoji(816016788969750539)}')
+        await ctx.send(f'მაგაზე პასუხი არ მაქვს, მგონი პრეფიქსი აგერია {bot.get_emoji(645706036292091904)}')
     raise error
 
 @bot.command()
