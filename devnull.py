@@ -12,17 +12,20 @@ music_playlist = []
 async def on_ready():
     print('Ready!')
 
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.CommandNotFound):
+        await ctx.send('პრეფიქსები ხომ არ აგერია')
+    raise error
 
 @bot.command()
 async def say(ctx, *args):
     await ctx.send(' '.join(args))
 
-
 @bot.command()
 async def flip(ctx):
     flipped = choice(['Heads', 'Tails'])
     await ctx.send(f'**{flipped}**')
-
 
 @bot.command()
 async def roll(ctx, *args: int):
@@ -31,7 +34,6 @@ async def roll(ctx, *args: int):
     elif len(args) == 2: args = list(args)
     args.sort()
     await ctx.send(randint(*args))
-
 
 @bot.command()
 async def countdown(ctx, seconds: int):
@@ -44,7 +46,6 @@ async def countdown(ctx, seconds: int):
             await msg.edit(content=f'**{i}**')
     else:
         await ctx.send('min seconds = 3; max = 120')
-
 
 @bot.command()
 async def emojiname(ctx, emoji):
