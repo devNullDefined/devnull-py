@@ -56,6 +56,7 @@ async def countdown(ctx, seconds: int):
 async def emojiname(ctx, emoji):
     '''Print encoded emojiname.'''
     await ctx.send(emoji.encode('ascii', 'namereplace'))
+    await ctx.send(f'emoji ID: {emoji.id}')
 
 
 for filename in os.listdir('./cogs'):
