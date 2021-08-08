@@ -6,8 +6,8 @@ import asyncio
 import json
 import os
 
-bot = commands.Bot(command_prefix=os.environ['PREFIX'])
-music_playlist = []
+intents = discord.Intents.all()
+bot = commands.Bot(command_prefix=os.environ['PREFIX'], intents=intents)
 
 @bot.event
 async def on_ready():
