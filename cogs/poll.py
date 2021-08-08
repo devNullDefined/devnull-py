@@ -48,7 +48,10 @@ class Poll(commands.Cog):
         poll.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
         msg = await ctx.send(embed=poll)
         self.polls[msg.id] = ctx.author.id
-        await ctx.message.delete()
+        try:
+            await ctx.message.delete()
+        except:
+            pass
         
         for i in range(len(options)):
             await msg.add_reaction(self.letters[i])
