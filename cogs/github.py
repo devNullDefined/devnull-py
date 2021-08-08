@@ -21,7 +21,14 @@ class Github(commands.Cog):
 
     def embed_from_data(self, data):
         name = data['login']
-        starred = len(requests.get(f'https://api.github.com/users/{name}/starred', auth=self.auth).json())
+        r = requests.get(f'https://api.github.com/users/{name}/starred', auth=self.auth)
+        if r.headers.get('Link'):
+            last_page = re.findall(r'\d+', r.headers['Link'])[-1]
+            rl = requests.get(f'https://api.github.com/users/{name}/starred?page={last_page}', auth=self.auth)
+            starred = (int(last_page)-1) * 30 + len(rl.json())
+        else:
+            starred = len(r.json())
+        
         updated_at = data['updated_at'].replace('T', ' · ')[:-1]
 
         if data['name']:
