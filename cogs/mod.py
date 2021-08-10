@@ -16,7 +16,7 @@ class Mod(commands.Cog):
     @commands.command()
     @commands.guild_only()
     @commands.has_permissions(administrator=True)
-    async def clear(self, ctx, limit: int, user: discord.Member=None):
+    async def clear(self, ctx, amount: int, user: discord.Member=None):
         if amount < 1:
             await ctx.send('Min amount = 1')
             return
