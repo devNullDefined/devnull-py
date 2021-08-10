@@ -58,7 +58,7 @@ class Github(commands.Cog):
             
     @commands.command()
     async def github(self, ctx, username):
-        '''Send embed for GitHub user'''
+        '''Sends embed for GitHub user'''
         data = self.fetch_user_data(username)
         if data:
             embed = self.embed_from_data(data)
@@ -69,7 +69,7 @@ class Github(commands.Cog):
 
     @commands.command()
     async def addgithub(self, ctx, username):
-        '''Create embed for user in GITHUB_CHANNEL'''
+        '''Creates embed for user in GITHUB_CHANNEL'''
         data = self.fetch_user_data(username)
         if data:
             embed = self.embed_from_data(data)
