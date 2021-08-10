@@ -38,7 +38,6 @@ class Utility(commands.Cog):
                 return
             msg = '```asciidoc'
             sep = len(max([command.name for command in cog.get_commands()], key=len)) + 2
-            print([command.name for command in cog.get_commands()], sep)
             for command in cog.get_commands():
                 msg += f'\n• {command.name}{" " * (sep-len(command.name))}:: {command.help if command.help else ""}'
             msg += f'```\nUse `{ctx.prefix}help <command>`for help with specific command'
