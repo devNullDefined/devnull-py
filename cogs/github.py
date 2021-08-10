@@ -1,5 +1,4 @@
 from discord.ext import tasks, commands
-from requests.auth import HTTPBasicAuth
 from bs4 import BeautifulSoup
 from datetime import datetime
 import discord
@@ -13,12 +12,11 @@ class Github(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.auth = HTTPBasicAuth(os.environ['GITHUB_USER'], os.environ['GITHUB_PAS'])
         self.update_github_embeds.start()
 
     def fetch_user_data(self, username):
         url = f'https://github.com/{username}'
-        r = requests.get(url, auth=self.auth)
+        r = requests.get(url)
         if r.status_code != 200:
             return
         soup = BeautifulSoup(r.text, 'html.parser')
