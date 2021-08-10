@@ -10,7 +10,10 @@ class Fun(commands.Cog):
 
     @commands.command()
     async def say(self, ctx, *args):
-        await ctx.message.delete()
+        try:
+            await ctx.message.delete()
+        except:
+            pass
         await ctx.send(' '.join(args))
 
     @commands.command()
@@ -28,13 +31,17 @@ class Fun(commands.Cog):
 
     @commands.command()
     async def countdown(self, ctx, seconds: int, msg=None):
-        '''Countdown from <seconds>.
-        min seconds = 3; max = 120
-        optionally add message to send after the countdown
-        '''
-        await ctx.message.delete()
-        if seconds not in range(3, 121):
-            await ctx.send('min seconds = 3; max = 120')
+        '''Counts down from <seconds> and optionally sends <msg> after'''
+        try:
+            await ctx.message.delete()
+        except:
+            pass
+
+        if seconds < 3:
+            await ctx.send('Min seconds = 3')
+            return
+        if seconds > 120:
+            await ctx.send('Max seconds = 120')
             return
 
         sent = await ctx.send(f'**{seconds}**')
