@@ -12,7 +12,7 @@ class Introduction(commands.Cog):
             fetch = discord.Embed(
                 title=self.bot.user.name,
                 type='rich',
-                description=f'**Prefix:** `{self.bot.command_prefix}`',
+                description=f'**Prefix:** `{self.bot.command_prefix(self.bot, message)}`',
                 color=0x336d9d,
                 url='https://github.com/devNullDefined/devnull-py'
             )
