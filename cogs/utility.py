@@ -36,9 +36,15 @@ class Utility(commands.Cog):
             if not cog:
                 await ctx.send('Group not found')
                 return
+            
+            commands = cog.get_commands()
+            if len(commands) == 0:
+                await ctx.send('Cog has 0 commands')
+                return
+
             msg = '```asciidoc'
-            sep = len(max([command.name for command in cog.get_commands()], key=len)) + 2
-            for command in cog.get_commands():
+            sep = len(max([command.name for command in commands], key=len)) + 2
+            for command in commands:
                 msg += f'\n• {command.name}{" " * (sep-len(command.name))}:: {command.help if command.help else ""}'
             msg += f'```\nUse `{ctx.prefix}help <command>`for help with specific command'
             await ctx.send(msg)
@@ -50,9 +56,12 @@ class Utility(commands.Cog):
                 colour=0x3172d9
             )
             for cog in self.bot.cogs:
+                commands = len(self.bot.get_cog(cog).get_commands())
+                if commands == 0:
+                    continue
                 embed.add_field(
                     name=f'**{cog}**',
-                    value=f'{len(self.bot.get_cog(cog).get_commands())} commands'
+                    value=f'{commands} commands'
                 )
             await ctx.send(embed=embed)
 
