@@ -18,12 +18,6 @@ async def on_command_error(ctx, error):
         await ctx.send(f'მაგაზე პასუხი არ მაქვს, მგონი პრეფიქსი აგერია {bot.get_emoji(645706036292091904)}')
     raise error
 
-@bot.command()
-async def emojiname(ctx, emoji: discord.Emoji):
-    '''Print encoded emojiname.'''
-    await ctx.send(str(emoji).encode('ascii', 'namereplace'))
-    await ctx.send(f'emoji ID: {emoji.id}')
-
 
 for filename in os.listdir('./cogs'):
     if filename.endswith('.py'):
