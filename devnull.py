@@ -5,8 +5,13 @@ import asyncio
 import json
 import os
 
+
+def get_prefix(bot, msg):
+    return os.environ['PREFIX']
+
+
 intents = discord.Intents.all()
-bot = commands.Bot(command_prefix=os.environ['PREFIX'], intents=intents)
+bot = commands.Bot(command_prefix=get_prefix, intents=intents)
 
 @bot.event
 async def on_ready():
