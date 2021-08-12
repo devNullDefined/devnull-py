@@ -66,15 +66,33 @@ class Github(commands.Cog):
             await ctx.send('User Not Found')
 
     @commands.command()
-    async def addgithub(self, ctx, username):
+    async def addgithub(self, ctx, *usernames):
         '''Creates embed for user in GITHUB_CHANNEL'''
-        data = self.fetch_user_data(username)
-        if data:
-            embed = self.embed_from_data(data)
-            github_channel = await self.bot.fetch_channel(os.environ['GITHUB_CHANNEL'])
-            await github_channel.send(embed=embed)
+        github_channel = await self.bot.fetch_channel(os.environ['GITHUB_CHANNEL'])
+        for username in usernames:
+            data = self.fetch_user_data(username)
+            if data:
+                embed = self.embed_from_data(data)
+                await github_channel.send(embed=embed)
+            else:
+                await ctx.send(f'User `{username}` was not found')
+
+    @commands.command()
+    @commands.is_owner()
+    async def update_github(self, ctx, message_id):
+        github_channel = await self.bot.fetch_channel(os.environ['GITHUB_CHANNEL'])
+        try:
+            message = await github_channel.fetch_message(message_id)
+        except Exception as e:
+            await ctx.send(e)
+            return
+        username = message.embeds[0].title.split()[0]
+        new_data = self.fetch_user_data(username)
+        if new_data:
+            new_embed = self.embed_from_data(new_data)
+            await message.edit(embed=new_embed)
         else:
-            await ctx.send('User Not Found')
+            await ctx.send('HTTP status code was not 200\nUsername: `{username}`')
         
     @tasks.loop(hours=12.0)
     async def update_github_embeds(self):
